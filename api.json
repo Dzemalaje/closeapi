@@ -27,7 +27,11 @@
             "description": "Filter leads by status",
             "schema": {
               "type": "string",
-              "enum": ["open", "won", "lost"]
+              "enum": [
+                "open",
+                "won",
+                "lost"
+              ]
             }
           }
         ],
