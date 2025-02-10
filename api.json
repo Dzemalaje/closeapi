@@ -284,11 +284,11 @@
         "name": "Authorization",
         "description": "API Key for Close CRM"
       }
-    },
-    "security": [
-      {
-        "closeApiKey": []
-      }
-    ]
-  }
+    }
+  },
+  "security": [
+    {
+      "closeApiKey": []
+    }
+  ]
 }
