@@ -1,296 +1,40 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Close Leads API",
-    "version": "1.0.0",
-    "description": "API to manage leads in Close CRM."
+    "title": "Sample API",
+    "description": "Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.",
+    "version": "0.1.9"
   },
   "servers": [
     {
-      "url": "https://api.close.com/api/v1"
+      "url": "http://api.example.com/v1",
+      "description": "Optional server description, e.g. Main (production) server"
+    },
+    {
+      "url": "http://staging-api.example.com",
+      "description": "Optional server description, e.g. Internal staging server for testing"
     }
   ],
   "paths": {
-    "/lead/": {
+    "/users": {
       "get": {
-        "summary": "List Leads",
-        "operationId": "listLeads",
-        "parameters": [
-          {
-            "name": "_limit",
-            "in": "query",
-            "description": "Limit the number of leads returned.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 50
-            }
-          },
-          {
-            "name": "_skip",
-            "in": "query",
-            "description": "Skip a number of leads for pagination.",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "name": "_fields",
-            "in": "query",
-            "description": "List of specific fields to include in the response (use 'custom' for all custom fields).",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Returns a list of users.",
+        "description": "Optional extended description in CommonMark or HTML.",
         "responses": {
           "200": {
-            "description": "A list of leads",
+            "description": "A JSON array of user names",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Lead"
+                    "type": "string"
                   }
                 }
               }
             }
           }
         }
-      },
-      "post": {
-        "summary": "Create a new Lead",
-        "operationId": "createLead",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeadCreate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Lead created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Lead"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/lead/{id}/": {
-      "get": {
-        "summary": "Retrieve a single lead",
-        "operationId": "getLead",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Lead ID",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "_fields",
-            "in": "query",
-            "description": "List of specific fields to include in the response",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A single lead",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Lead"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update an existing Lead",
-        "operationId": "updateLead",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Lead ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeadUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Lead updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Lead"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a Lead",
-        "operationId": "deleteLead",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Lead ID",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Lead deleted successfully"
-          }
-        }
-      }
-    },
-    "/lead/merge/": {
-      "post": {
-        "summary": "Merge two leads",
-        "operationId": "mergeLeads",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LeadMerge"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Leads merged successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Lead"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Lead": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "The unique ID of the lead"
-          },
-          "status_id": {
-            "type": "string",
-            "description": "The ID of the status"
-          },
-          "custom": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Custom fields associated with the lead"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Timestamp when the lead was created"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Timestamp when the lead was last updated"
-          }
-        }
-      },
-      "LeadCreate": {
-        "type": "object",
-        "properties": {
-          "status_id": {
-            "type": "string",
-            "description": "The ID of the status"
-          },
-          "custom": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Custom fields to set for the lead"
-          }
-        },
-        "required": ["status_id"]
-      },
-      "LeadUpdate": {
-        "type": "object",
-        "properties": {
-          "status_id": {
-            "type": "string",
-            "description": "The ID of the status"
-          },
-          "custom": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "description": "Custom fields to update for the lead"
-          }
-        }
-      },
-      "LeadMerge": {
-        "type": "object",
-        "properties": {
-          "source": {
-            "type": "string",
-            "description": "The ID of the source lead"
-          },
-          "destination": {
-            "type": "string",
-            "description": "The ID of the destination lead"
-          }
-        },
-        "required": ["source", "destination"]
       }
     }
   }
