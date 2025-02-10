@@ -10,37 +10,20 @@
     }
   ],
   "paths": {
-    "/lead": {
+    "/me": {
       "get": {
-        "tags": ["Leads"],
-        "summary": "Get leads",
-        "operationId": "getLeads",
-        "parameters": [
-          {
-            "name": "status",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["open", "won", "lost"]
-            }
-          }
-        ],
+        "operationId": "getCurrentUser",
+        "summary": "Get current user",
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {"type": "string"},
-                      "name": {"type": "string"},
-                      "status": {"type": "string"},
-                      "created_at": {"type": "string", "format": "date-time"}
-                    }
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "string"},
+                    "email": {"type": "string"}
                   }
                 }
               }
