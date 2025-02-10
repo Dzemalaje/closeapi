@@ -2,25 +2,19 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Close CRM API",
-    "version": "1.0.0",
-    "description": "Close CRM integration for Toddle"
+    "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "https://api.close.com/api/v1",
-      "description": "Close API Production Server"
-    }
-  ],
   "paths": {
     "/lead": {
       "get": {
+        "tags": ["Leads"],
+        "summary": "Get leads",
         "operationId": "getLeads",
-        "summary": "Retrieve leads",
         "parameters": [
           {
             "name": "status",
             "in": "query",
-            "description": "Lead status filter",
+            "required": false,
             "schema": {
               "type": "string",
               "enum": ["open", "won", "lost"]
@@ -29,7 +23,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
@@ -37,17 +31,27 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "id": { "type": "string" },
-                      "name": { "type": "string" },
-                      "status": { "type": "string" },
-                      "created_at": { "type": "string", "format": "date-time" }
+                      "id": {"type": "string"},
+                      "name": {"type": "string"},
+                      "status": {"type": "string"},
+                      "created_at": {"type": "string", "format": "date-time"}
                     }
                   }
                 }
               }
             }
           }
-        }
+        },
+        "security": [{"apiKey": []}]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
       }
     }
   }
