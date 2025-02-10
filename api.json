@@ -1,0 +1,82 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GitHub-like API with Close CRM Integration",
+    "version": "1.0.0",
+    "description": "A simple API specification for GitHub-like system with Close CRM integration"
+  },
+  "servers": [
+    {
+      "url": "https://api.close.com/api/v1",
+      "description": "Close CRM API server"
+    }
+  ],
+  "paths": {
+    "/lead": {
+      "get": {
+        "summary": "Get a list of leads",
+        "security": [
+          {
+            "closeApiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter leads by status",
+            "schema": {
+              "type": "string",
+              "enum": ["open", "won", "lost"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of leads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "closeApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "API Key for Close CRM"
+      }
+    }
+  },
+  "security": [
+    {
+      "closeApiKey": []
+    }
+  ]
+}
