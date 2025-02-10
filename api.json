@@ -1,20 +1,18 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "info": {
     "title": "Close CRM API",
     "version": "1.0.0",
     "description": "API specification for Close CRM integration"
   },
-  "servers": [
-    {
-      "url": "https://api.close.com/api/v1",
-      "description": "Close CRM API server"
-    }
-  ],
+  "host": "api.close.com",
+  "basePath": "/api/v1",
+  "schemes": ["https"],
   "paths": {
     "/lead": {
       "get": {
         "summary": "Get a list of leads",
+        "description": "Retrieve all leads from Close CRM.",
         "security": [
           {
             "closeApiKey": []
@@ -25,36 +23,31 @@
             "name": "status",
             "in": "query",
             "description": "Filter leads by status",
-            "schema": {
-              "type": "string",
-              "enum": ["open", "won", "lost"]
-            }
+            "required": false,
+            "type": "string",
+            "enum": ["open", "won", "lost"]
           }
         ],
         "responses": {
           "200": {
             "description": "A list of leads",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
                   }
                 }
               }
@@ -64,14 +57,12 @@
       }
     }
   },
-  "components": {
-    "securitySchemes": {
-      "closeApiKey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization",
-        "description": "API Key for Close CRM (format: 'Bearer YOUR_API_KEY')"
-      }
+  "securityDefinitions": {
+    "closeApiKey": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "API Key for Close CRM (format: 'Bearer YOUR_API_KEY')"
     }
   }
 }
