@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "GitHub-like API with Close CRM Integration",
+    "title": "Close CRM API",
     "version": "1.0.0",
-    "description": "A simple API specification for GitHub-like system with Close CRM integration"
+    "description": "API specification for Close CRM integration"
   },
   "servers": [
     {
@@ -27,11 +27,7 @@
             "description": "Filter leads by status",
             "schema": {
               "type": "string",
-              "enum": [
-                "open",
-                "won",
-                "lost"
-              ]
+              "enum": ["open", "won", "lost"]
             }
           }
         ],
@@ -74,13 +70,8 @@
         "type": "apiKey",
         "in": "header",
         "name": "Authorization",
-        "description": "API Key for Close CRM"
+        "description": "API Key for Close CRM (format: 'Bearer YOUR_API_KEY')"
       }
     }
-  },
-  "security": [
-    {
-      "closeApiKey": []
-    }
-  ]
+  }
 }
