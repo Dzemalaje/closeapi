@@ -15,6 +15,11 @@
     "/lead": {
       "get": {
         "summary": "Get a list of leads",
+        "security": [
+          {
+            "closeApiKey": []
+          }
+        ],
         "parameters": [
           {
             "name": "status",
@@ -67,11 +72,11 @@
         "name": "Authorization",
         "description": "API Key for Close CRM"
       }
-    },
-    "security": [
-      {
-        "closeApiKey": []
-      }
-    ]
-  }
+    }
+  },
+  "security": [
+    {
+      "closeApiKey": []
+    }
+  ]
 }
