@@ -11,13 +11,8 @@
   "paths": {
     "/lead": {
       "get": {
-        "summary": "Get a list of leads",
-        "description": "Retrieve all leads from Close CRM.",
-        "security": [
-          {
-            "closeApiKey": []
-          }
-        ],
+        "summary": "Retrieve a list of leads",
+        "description": "Get leads from Close CRM with optional status filtering.",
         "parameters": [
           {
             "name": "status",
@@ -36,24 +31,23 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "status": {
-                    "type": "string"
-                  },
-                  "created_at": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "status": { "type": "string" },
+                  "created_at": { "type": "string", "format": "date-time" }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
           }
-        }
+        },
+        "security": [
+          {
+            "closeApiKey": []
+          }
+        ]
       }
     }
   },
