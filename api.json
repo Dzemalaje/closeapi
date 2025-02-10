@@ -7,7 +7,8 @@
   },
   "servers": [
     {
-      "url": "https://api.close.com/api/v1"
+      "url": "https://api.close.com/api/v1",
+      "description": "Close API Production Server"
     }
   ],
   "paths": {
@@ -46,17 +47,7 @@
               }
             }
           }
-        },
-        "security": [{"apiKey": []}]
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "apiKey": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header"
+        }
       }
     }
   }
