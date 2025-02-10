@@ -1,30 +1,48 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Close CRM API",
+    "title": "Close Leads API",
     "version": "1.0.0",
-    "description": "Complete API specification for Close CRM integration"
+    "description": "API to manage leads in Close CRM."
   },
   "servers": [
     {
-      "url": "https://api.close.com/api/v1",
-      "description": "Close CRM API server"
+      "url": "https://api.close.com/api/v1"
     }
   ],
   "paths": {
-    "/lead": {
+    "/lead/": {
       "get": {
-        "summary": "Retrieve a list of leads",
-        "description": "Get a list of leads from Close CRM with optional status filtering.",
+        "summary": "List Leads",
+        "operationId": "listLeads",
         "parameters": [
           {
-            "name": "status",
+            "name": "_limit",
             "in": "query",
-            "description": "Filter leads by status",
+            "description": "Limit the number of leads returned.",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": ["open", "won", "lost"]
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "name": "_skip",
+            "in": "query",
+            "description": "Skip a number of leads for pagination.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "_fields",
+            "in": "query",
+            "description": "List of specific fields to include in the response (use 'custom' for all custom fields).",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -36,207 +54,59 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Lead"
                   }
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new Lead",
+        "operationId": "createLead",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lead"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/lead/{lead_id}": {
+    "/lead/{id}/": {
       "get": {
-        "summary": "Retrieve a single lead by ID",
-        "description": "Get detailed information about a specific lead.",
+        "summary": "Retrieve a single lead",
+        "operationId": "getLead",
         "parameters": [
           {
-            "name": "lead_id",
+            "name": "id",
             "in": "path",
             "required": true,
-            "description": "The ID of the lead to retrieve",
+            "description": "Lead ID",
             "schema": {
               "type": "string"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lead details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  }
-                }
-              }
-            }
           },
-          "404": {
-            "description": "Lead not found"
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
-          }
-        }
-      }
-    },
-    "/contact": {
-      "get": {
-        "summary": "Retrieve a list of contacts",
-        "description": "Get a list of contacts from Close CRM.",
-        "responses": {
-          "200": {
-            "description": "A list of contacts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      },
-                      "phone": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
-          }
-        }
-      }
-    },
-    "/opportunity": {
-      "get": {
-        "summary": "Retrieve a list of opportunities",
-        "description": "Get a list of opportunities from Close CRM.",
-        "responses": {
-          "200": {
-            "description": "A list of opportunities",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      },
-                      "value": {
-                        "type": "number"
-                      },
-                      "status": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
-          }
-        }
-      }
-    },
-    "/task": {
-      "get": {
-        "summary": "Retrieve a list of tasks",
-        "description": "Get a list of tasks from Close CRM.",
-        "responses": {
-          "200": {
-            "description": "A list of tasks",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "description": {
-                        "type": "string"
-                      },
-                      "status": {
-                        "type": "string"
-                      },
-                      "due_date": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
-          }
-        }
-      }
-    },
-    "/activity": {
-      "get": {
-        "summary": "Retrieve a list of activities",
-        "description": "Get a list of activities associated with leads, contacts, and opportunities.",
-        "parameters": [
           {
-            "name": "lead_id",
+            "name": "_fields",
             "in": "query",
-            "description": "Filter activities by lead ID",
+            "description": "List of specific fields to include in the response",
             "required": false,
             "schema": {
               "type": "string"
@@ -245,50 +115,183 @@
         ],
         "responses": {
           "200": {
-            "description": "A list of activities",
+            "description": "A single lead",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "activity_type": {
-                        "type": "string"
-                      },
-                      "created_at": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/Lead"
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing Lead",
+        "operationId": "updateLead",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Lead ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lead"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a Lead",
+        "operationId": "deleteLead",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Lead ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Lead deleted successfully"
+          }
+        }
+      }
+    },
+    "/lead/merge/": {
+      "post": {
+        "summary": "Merge two leads",
+        "operationId": "mergeLeads",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LeadMerge"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Leads merged successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lead"
+                }
+              }
+            }
           }
         }
       }
     }
   },
   "components": {
-    "securitySchemes": {
-      "closeApiKey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization",
-        "description": "API Key for Close CRM"
+    "schemas": {
+      "Lead": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique ID of the lead"
+          },
+          "status_id": {
+            "type": "string",
+            "description": "The ID of the status"
+          },
+          "custom": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Custom fields associated with the lead"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the lead was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the lead was last updated"
+          }
+        }
+      },
+      "LeadCreate": {
+        "type": "object",
+        "properties": {
+          "status_id": {
+            "type": "string",
+            "description": "The ID of the status"
+          },
+          "custom": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Custom fields to set for the lead"
+          }
+        },
+        "required": ["status_id"]
+      },
+      "LeadUpdate": {
+        "type": "object",
+        "properties": {
+          "status_id": {
+            "type": "string",
+            "description": "The ID of the status"
+          },
+          "custom": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Custom fields to update for the lead"
+          }
+        }
+      },
+      "LeadMerge": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "The ID of the source lead"
+          },
+          "destination": {
+            "type": "string",
+            "description": "The ID of the destination lead"
+          }
+        },
+        "required": ["source", "destination"]
       }
     }
-  },
-  "security": [
-    {
-      "closeApiKey": []
-    }
-  ]
+  }
 }
