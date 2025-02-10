@@ -1,62 +1,63 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "Close CRM API",
     "version": "1.0.0",
-    "description": "API specification for Close CRM integration"
+    "description": "Close CRM integration for Toddle"
   },
-  "host": "api.close.com",
-  "basePath": "/api/v1",
-  "schemes": ["https"],
+  "servers": [
+    {
+      "url": "https://api.close.com/api/v1"
+    }
+  ],
   "paths": {
     "/lead": {
       "get": {
-        "summary": "Retrieve a list of leads",
-        "description": "Get leads from Close CRM with optional status filtering.",
+        "operationId": "getLeads",
+        "summary": "Retrieve leads",
         "parameters": [
           {
             "name": "status",
             "in": "query",
-            "description": "Filter leads by status",
-            "required": false,
-            "type": "string",
-            "enum": ["open", "won", "lost"]
+            "description": "Lead status filter",
+            "schema": {
+              "type": "string",
+              "enum": ["open", "won", "lost"]
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "A list of leads",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": { "type": "string" },
-                  "name": { "type": "string" },
-                  "status": { "type": "string" },
-                  "created_at": { "type": "string", "format": "date-time" }
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "name": { "type": "string" },
+                      "status": { "type": "string" },
+                      "created_at": { "type": "string", "format": "date-time" }
+                    }
+                  }
                 }
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized - API key is missing or invalid"
           }
         },
-        "security": [
-          {
-            "closeApiKey": []
-          }
-        ]
+        "security": [{"apiKey": []}]
       }
     }
   },
-  "securityDefinitions": {
-    "closeApiKey": {
-      "type": "apiKey",
-      "name": "Authorization",
-      "in": "header",
-      "description": "API Key for Close CRM (format: 'Bearer YOUR_API_KEY')"
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
     }
   }
 }
