@@ -1,1 +1,294 @@
-{"openapi":"3.0.0","info":{"title":"Sample API","description":"Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.","version":"0.1.9"},"servers":[{"url":"http://api.example.com/v1","description":"Optional server description, e.g. Main (production) server"},{"url":"http://staging-api.example.com","description":"Optional server description, e.g. Internal staging server for testing"}],"paths":{"/users":{"get":{"summary":"Returns a list of users.","description":"Optional extended description in CommonMark or HTML.","responses":{"200":{"description":"A JSON array of user names","content":{"application/json":{"schema":{"type":"array","items":{"type":"string"}}}}}}}}}}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Close CRM API",
+    "version": "1.0.0",
+    "description": "Complete API specification for Close CRM integration"
+  },
+  "servers": [
+    {
+      "url": "https://api.close.com/api/v1",
+      "description": "Close CRM API server"
+    }
+  ],
+  "paths": {
+    "/lead": {
+      "get": {
+        "summary": "Retrieve a list of leads",
+        "description": "Get a list of leads from Close CRM with optional status filtering.",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter leads by status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["open", "won", "lost"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of leads",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    },
+    "/lead/{lead_id}": {
+      "get": {
+        "summary": "Retrieve a single lead by ID",
+        "description": "Get detailed information about a specific lead.",
+        "parameters": [
+          {
+            "name": "lead_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the lead to retrieve",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Lead not found"
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    },
+    "/contact": {
+      "get": {
+        "summary": "Retrieve a list of contacts",
+        "description": "Get a list of contacts from Close CRM.",
+        "responses": {
+          "200": {
+            "description": "A list of contacts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "phone": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    },
+    "/opportunity": {
+      "get": {
+        "summary": "Retrieve a list of opportunities",
+        "description": "Get a list of opportunities from Close CRM.",
+        "responses": {
+          "200": {
+            "description": "A list of opportunities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    },
+    "/task": {
+      "get": {
+        "summary": "Retrieve a list of tasks",
+        "description": "Get a list of tasks from Close CRM.",
+        "responses": {
+          "200": {
+            "description": "A list of tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "due_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    },
+    "/activity": {
+      "get": {
+        "summary": "Retrieve a list of activities",
+        "description": "Get a list of activities associated with leads, contacts, and opportunities.",
+        "parameters": [
+          {
+            "name": "lead_id",
+            "in": "query",
+            "description": "Filter activities by lead ID",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of activities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "activity_type": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - API key is missing or invalid"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "closeApiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "API Key for Close CRM"
+      }
+    },
+    "security": [
+      {
+        "closeApiKey": []
+      }
+    ]
+  }
+}
